@@ -17,6 +17,22 @@
 This is the official repository for the paper [Random Policy Valuation is Enough for LLM Reasoning with Verifiable Rewards](https://arxiv.org/abs/2505.17618). This repository currently contains code for environment setup, training, and evaluation.
 
 🚀 We propose <u>**R**</u>andom P<u>**o**</u>licy <u>**V**</u>aluation for Di<u>**v**</u>erse <u>**R**</u>easoning (**ROVER**), a minimalist and highly effective RL method for LLM reasoning, achieving superior optimality and diversity by evaluating uniform-policy Q-values.
+
+
+### 🏆 Main Results and Features
+<img width="1217" height="395" alt="image" src="https://github.com/user-attachments/assets/5c242c66-baec-4416-9a3e-89cbef8d6724" />
+<em>Figure 1: (a) ROVER achieves superior performances in terms of both pass@1 and pass@256 (trained on Qwen3-8B-Base averaged over AIME24, AIME24 and HMMT25 tasks). (b) Illustrative example demonstrating that ROVER achieves high-quality solutions with a lightweight procedure (see Table below for details) while maintaining diversity. (c) ROVER achieves higher diversity.</em> <br>
+<br>
+ROVER uses minimal GPU memory, leaving more space for the KV cache. This allows ROVER to run on smaller memory setups and speeds up training:
+
+| Method       | Memory Usage of Model Parameters                |
+| ------------ | ----------------------------------------------- |
+| ROVER (Ours) | **Low**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(actor model ONLY!😊)                |
+| GRPO         | **Medium** (actor + reference model)            |
+| PPO          | **High**&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(actor + reference + critic model)   |
+
+
+
 ### 🤗 Models
 | Models | Tasks | 
 |:---------|:-----|
