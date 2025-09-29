@@ -221,7 +221,7 @@ class FSDPActorConfig(ActorConfig):
     entropy_checkpointing: bool = False
     fsdp_config: FSDPEngineConfig = field(default_factory=FSDPEngineConfig)
     next_q_scale_factor: float = 1.0  # NOTE: added by yyx in 0901
-    rpe_t: float = 1.0  # NOTE: added by yyx in 0901
+    rover_t: float = 1.0  # NOTE: added by yyx in 0901
     use_remove_padding: bool = False
     profiler: ProfilerConfig = field(default_factory=ProfilerConfig)
 

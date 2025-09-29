@@ -24,7 +24,7 @@ from omegaconf import OmegaConf
 
 from verl.experimental.dataset.sampler import AbstractSampler
 from verl.trainer.constants_ppo import get_ppo_ray_runtime_env
-from verl.trainer.ppo.ray_trainer import RayRPETrainer
+from verl.trainer.ppo.ray_trainer import RayROVERTrainer
 from verl.trainer.ppo.reward import load_reward_manager
 from verl.trainer.ppo.utils import need_critic, need_reference_policy
 from verl.utils.config import validate_config
@@ -222,7 +222,7 @@ class TaskRunner:
         OmegaConf.resolve(config)
 
         actor_rollout_cls, ray_worker_group_cls = self.add_actor_rollout_worker(config)
-        # self.add_critic_worker(config)  # for rpe, we don't need critic
+        # self.add_critic_worker(config)  # for rover, we don't need critic
 
         # We should adopt a multi-source reward function here:
         # - for rule-based rm, we directly call a reward score
@@ -233,7 +233,7 @@ class TaskRunner:
         self.add_reward_model_worker(config)
 
         # Add a reference policy worker if KL loss or KL reward is used.
-        # self.add_ref_policy_worker(config, actor_rollout_cls) # for rpe, we don't need ref_policy
+        # self.add_ref_policy_worker(config, actor_rollout_cls) # for rover, we don't need ref_policy
 
         # validate config
         validate_config(
@@ -274,7 +274,7 @@ class TaskRunner:
         train_sampler = create_rl_sampler(config.data, train_dataset)
 
         # Initialize the PPO trainer.
-        trainer = RayRPETrainer(
+        trainer = RayROVERTrainer(
             config=config,
             tokenizer=tokenizer,
             processor=processor,

@@ -41,7 +41,7 @@ SCRIPT_NAME_NO_EXT="${SCRIPT_NAME%.*}"
 CKPTS_DIR=${CKPTS_DIR:-"ckpts/${SCRIPT_NAME_NO_EXT}"}
 
 # Train over 4 nodes, 8 A100-80GB GPUs per node.
-python3 -m verl.trainer.main_rpe \
+python3 -m verl.trainer.main_rover \
     algorithm.adv_estimator=grpo \
     algorithm.norm_adv_by_std_in_grpo=True \
     data.train_files=/data/ROVER-qwen3/scripts/deepscaler/data/deepscaler_train.parquet \

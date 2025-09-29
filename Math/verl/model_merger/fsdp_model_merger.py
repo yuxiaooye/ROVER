@@ -269,7 +269,7 @@ if __name__ == "__main__":
 
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--global_step_dir", type=str, default="/mnt/yuxiao-juicefs/verl-0827/ckpts/deepscaler_qwen3_8bbase_mine_rpe_sf0.1_0901/global_step_600")
+    parser.add_argument("--global_step_dir", type=str)
     args = parser.parse_args()
 
     config = ModelMergerConfig(

@@ -9,7 +9,6 @@ from typing import List, Union
 import os
 
 import sys
-sys.path = ['/data/RPE-Zero'] + sys.path
 
 from rllm.globals import THOUGHT_DELIMITER_START, THOUGHT_DELIMITER_END, OAI_RM_MODEL
 from rllm.rewards import RewardConfig, RewardFn, RewardInput, RewardOutput, RewardType

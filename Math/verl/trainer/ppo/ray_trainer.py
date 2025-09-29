@@ -255,9 +255,9 @@ def compute_advantage(
         )
         data.batch["advantages"] = advantages
         data.batch["returns"] = returns
-    elif adv_estimator == AdvantageEstimator.RPE:
-        # print('>>>rpe compute_advantage')
-        advantages, returns = core_algos.compute_rpe_outcome_advantage(
+    elif adv_estimator == AdvantageEstimator.ROVER:
+        # print('>>>rover compute_advantage')
+        advantages, returns = core_algos.compute_rover_outcome_advantage(
             token_level_rewards=data.batch["token_level_rewards"],
             eos_mask=data.batch["response_mask"],
             index=data.non_tensor_batch["uid"],
@@ -1248,7 +1248,7 @@ class RayPPOTrainer:
 
 
 
-class RayRPETrainer:
+class RayROVERTrainer:
     """Distributed PPO trainer using Ray for scalable reinforcement learning.
 
     This trainer orchestrates distributed PPO training across multiple nodes and GPUs,

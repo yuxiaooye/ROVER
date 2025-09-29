@@ -500,7 +500,7 @@ class DataParallelPPOActor(BasePPOActor):
         return metrics
 
 
-class DataParallelRPEActor(BasePPOActor):
+class DataParallelROVERActor(BasePPOActor):
     """FSDP DataParallel PPO Actor or Ref worker
 
     Args:
@@ -829,7 +829,7 @@ class DataParallelRPEActor(BasePPOActor):
 
     @GPUMemoryLogger(role="dp actor", logger=logger)
     def update_policy(self, data: DataProto):
-        # print('>>> DataParallelRPEActor.update_policy')
+        # print('>>> DataParallelROVERActor.update_policy')
         # make sure we are in training mode
         self.actor_module.train()
 
@@ -890,7 +890,7 @@ class DataParallelRPEActor(BasePPOActor):
                     old_log_prob = model_inputs["old_log_probs"]
                     old_logits = model_inputs["old_logits"]
                     rollout_log_probs = model_inputs["rollout_log_probs"] if self.config.tis_imp_ratio_cap > 0 else None
-                    advantages = model_inputs["advantages"]
+                    low_var_reward = model_inputs["advantages"]
 
                     entropy_coeff = self.config.entropy_coeff
                     loss_agg_mode = self.config.loss_agg_mode
@@ -919,26 +919,26 @@ class DataParallelRPEActor(BasePPOActor):
                         entropy_loss = agg_loss(loss_mat=entropy, loss_mask=response_mask, loss_agg_mode=loss_agg_mode)
 
 
-                    # NOTE: ------------ RPE start ------------                    
+                    # ------------ ROVER start ------------                    
                     if hasattr(self.config, 'target_adv_only') and self.config.target_adv_only:
                         # print('>>> target_adv_only')
-                        target = advantages
+                        target = low_var_reward
                     else:
-                        # print(f'>>> rpe_t={self.config.rpe_t}')
-                        next_q = self.config.rpe_t * torch.cat([((current_q[:,1:]-old_logits[:,1:]))* response_mask[:,1:],torch.zeros_like(response_mask[:,:1])],dim=1)
+                        # print(f'>>> rover_t={self.config.rover_t}')
+                        next_q = self.config.rover_t * torch.cat([((current_q[:,1:]-old_logits[:,1:]))* response_mask[:,1:],torch.zeros_like(response_mask[:,:1])],dim=1)
                         if hasattr(self.config, 'next_q_scale_factor'):
                             scaled_next_q = next_q * self.config.next_q_scale_factor
-                            target = advantages + scaled_next_q
+                            target = low_var_reward + scaled_next_q
                         else:
-                            target = advantages + next_q  
+                            target = low_var_reward + next_q  
 
                         metrics_update = {
                             'actor/next_q_max': next_q.max().detach().item(),
                             'actor/next_q_mean': next_q.mean().detach().item(),
                             'actor/next_q_min': next_q.min().detach().item(),
-                            'actor/adv-next_q_max': (advantages-next_q).max().detach().item(),
-                            'actor/adv-next_q_mean': (advantages-next_q).mean().detach().item(),
-                            'actor/adv-next_q_min': (advantages-next_q).min().detach().item(), 
+                            'actor/adv-next_q_max': (low_var_reward-next_q).max().detach().item(),
+                            'actor/adv-next_q_mean': (low_var_reward-next_q).mean().detach().item(),
+                            'actor/adv-next_q_min': (low_var_reward-next_q).min().detach().item(), 
                         }
                         append_to_dict(metrics, metrics_update)
 
@@ -947,26 +947,26 @@ class DataParallelRPEActor(BasePPOActor):
                                 'actor/scaled_next_q_max': scaled_next_q.max().detach().item(),
                                 'actor/scaled_next_q_mean': scaled_next_q.mean().detach().item(),
                                 'actor/scaled_next_q_min': scaled_next_q.min().detach().item(),
-                                'actor/adv-scaled_next_q_max': (advantages-scaled_next_q).max().detach().item(),
-                                'actor/adv-scaled_next_q_mean': (advantages-scaled_next_q).mean().detach().item(),
-                                'actor/adv-scaled_next_q_min': (advantages-scaled_next_q).min().detach().item(),
+                                'actor/adv-scaled_next_q_max': (low_var_reward-scaled_next_q).max().detach().item(),
+                                'actor/adv-scaled_next_q_mean': (low_var_reward-scaled_next_q).mean().detach().item(),
+                                'actor/adv-scaled_next_q_min': (low_var_reward-scaled_next_q).min().detach().item(),
                             }
                             append_to_dict(metrics, metrics_update)
                     
                     metrics_update = {
-                        'actor/advantages_max': advantages.max().detach().item(),
-                        'actor/advantages_mean': advantages.mean().detach().item(),
-                        'actor/advantages_masked_mean': masked_mean(advantages, response_mask).detach().item(),
-                        'actor/advantages_min': advantages.min().detach().item(),
+                        'actor/advantages_max': low_var_reward.max().detach().item(),
+                        'actor/advantages_mean': low_var_reward.mean().detach().item(),
+                        'actor/advantages_masked_mean': masked_mean(low_var_reward, response_mask).detach().item(),
+                        'actor/advantages_min': low_var_reward.min().detach().item(),
                         'actor/target_max': target.max().detach().item(),
                         'actor/target_mean': target.mean().detach().item(),
                         'actor/target_min': target.min().detach().item(),
                     }
                     append_to_dict(metrics, metrics_update)
 
-                    logIS = self.config.rpe_t * (log_prob-old_log_prob)#(log_prob - 0.9*old_log_prob-0.1*ref_log_prob) #+ log_prob - ref_log_prob_
-                    if hasattr(self.config, 'use_rpe_clip') and self.config.use_rpe_clip:
-                        # print('>>> rpe_clip')
+                    logIS = self.config.rover_t * (log_prob-old_log_prob)#(log_prob - 0.9*old_log_prob-0.1*ref_log_prob) #+ log_prob - ref_log_prob_
+                    if hasattr(self.config, 'use_rover_clip') and self.config.use_rover_clip:
+                        # print('>>> rover_clip')
                         clip_high = torch.log(torch.tensor(1.0 + self.config.clip_ratio, device=logIS.device))
                         clip_low = torch.log(torch.tensor(1.0 - self.config.clip_ratio, device=logIS.device))
                         # print('>>> clip_high', clip_high)
@@ -1015,16 +1015,16 @@ class DataParallelRPEActor(BasePPOActor):
                     append_to_dict(metrics, metrics_update)
 
 
-                    if hasattr(self.config, 'response_level_rpe_loss') and self.config.response_level_rpe_loss:
-                        # print('>>> response-level rpe_loss')
-                        rpe_loss = (((q_values).sum(dim=-1) / response_mask.sum(dim=-1) - advantages[:, 0].detach())**2).mean()
+                    if hasattr(self.config, 'response_level_rover_loss') and self.config.response_level_rover_loss:
+                        # print('>>> response-level rover_loss')
+                        rover_loss = (((q_values).sum(dim=-1) / response_mask.sum(dim=-1) - low_var_reward[:, 0].detach())**2).mean()
                     else:
-                        # print('>>> token-level rpe_loss')
-                        rpe_loss = core_algos.compute_rpe_loss(q_values, target, eos_mask=response_mask)
+                        # print('>>> token-level rover_loss')
+                        rover_loss = core_algos.compute_rover_loss(q_values, target, eos_mask=response_mask)
 
                     # if in_epoch:
-                    clip_gt_ratio = ((q_values > advantages) & (advantages > 0)).sum().float() / ((advantages >= 0).sum() + 1e-8)
-                    clip_lt_ratio = ((q_values < advantages) & (advantages < 0)).sum().float() / ((advantages <= 0).sum() + 1e-8)
+                    clip_gt_ratio = ((q_values > low_var_reward) & (low_var_reward > 0)).sum().float() / ((low_var_reward >= 0).sum() + 1e-8)
+                    clip_lt_ratio = ((q_values < low_var_reward) & (low_var_reward < 0)).sum().float() / ((low_var_reward <= 0).sum() + 1e-8)
                     print('>>>clip_gt_ratio', clip_gt_ratio.detach().item())
                     print('>>>clip_lt_ratio', clip_lt_ratio.detach().item())
                     metrics_update = {
@@ -1033,7 +1033,7 @@ class DataParallelRPEActor(BasePPOActor):
                     }
                     append_to_dict(metrics, metrics_update)
 
-                    # NOTE: ------------ RPE end ------------                    
+                    # ------------ ROVER end ------------                    
 
                     if self.config.use_kl_loss:
                         # print('>>> kl_loss')
@@ -1050,15 +1050,15 @@ class DataParallelRPEActor(BasePPOActor):
 
                     if self.config.use_dynamic_bsz:
                         # relative to the dynamic bsz
-                        loss = rpe_loss * loss_scale_factor
+                        loss = rover_loss * loss_scale_factor
                     else:
-                        loss = rpe_loss * loss_scale_factor
+                        loss = rover_loss * loss_scale_factor
                     loss.backward()
 
                     micro_batch_metrics.update(
                         {
                             "actor/entropy_loss": entropy_loss.detach().item() * loss_scale_factor,
-                            "actor/rpe_loss": rpe_loss.detach().item() * loss_scale_factor,
+                            "actor/rover_loss": rover_loss.detach().item() * loss_scale_factor,
                             # "actor/pg_clipfrac": pg_clipfrac.detach().item(),
                             # "actor/ppo_kl": ppo_kl.detach().item(),
                             # "actor/pg_clipfrac_lower": pg_clipfrac_lower.detach().item(),

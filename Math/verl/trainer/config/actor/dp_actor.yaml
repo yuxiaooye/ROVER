@@ -26,8 +26,8 @@ grad_clip: 1.0
 # oc.select: the default val for ref.ulysses_sequence_parallel_size
 ulysses_sequence_parallel_size: 1
 
-next_q_scale_factor: 1.0  # NOTE: added by yyx in 0901
-rpe_t: 1.0  # NOTE: added by yyx in 0901
+next_q_scale_factor: 1.0
+rover_t: 1.0 
 
 # calculate entropy with chunking to reduce memory peak
 entropy_from_logits_with_chunking: False

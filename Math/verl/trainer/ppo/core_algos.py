@@ -102,7 +102,7 @@ class AdvantageEstimator(str, Enum):
     GRPO_PASSK = "grpo_passk"
     GPG = "gpg"
 
-    RPE = "rpe"
+    ROVER = "rover"
     GRPO_UNLIKELINESS = "grpo_unlikeliness"
 
 
@@ -330,7 +330,7 @@ def compute_grpo_outcome_advantage(
 
 
 # NOTE(sgm): this implementation only consider outcome supervision, where the reward is a scalar.
-def compute_rpe_outcome_advantage(token_level_rewards: torch.Tensor,
+def compute_rover_outcome_advantage(token_level_rewards: torch.Tensor,
                                    eos_mask: torch.Tensor,
                                    index: torch.Tensor,
                                    epsilon: float = 1e-6,
@@ -752,7 +752,7 @@ def compute_rewards(token_level_scores, old_log_prob, ref_log_prob, kl_ratio):
     return token_level_scores - kl * kl_ratio
 
 
-def compute_rpe_loss(q_values, target, eos_mask,step=0,weights=1):
+def compute_rover_loss(q_values, target, eos_mask,step=0,weights=1):
     """Adapted from https://github.com/huggingface/trl/blob/main/trl/trainer/ppo_trainer.py#L1122
 
     Args:
@@ -775,12 +775,12 @@ def compute_rpe_loss(q_values, target, eos_mask,step=0,weights=1):
 
     """
 
-    rpe_loss_ = ((q_values-target.detach())**2)#.reshape(len(eos_mask),-1)
+    rover_loss_ = ((q_values-target.detach())**2)#.reshape(len(eos_mask),-1)
 
     
-    rpe_loss = verl_F.masked_mean(rpe_loss_, eos_mask)
+    rover_loss = verl_F.masked_mean(rover_loss_, eos_mask)
 
-    return rpe_loss
+    return rover_loss
 
 
 def agg_loss(loss_mat: torch.Tensor, loss_mask: torch.Tensor, loss_agg_mode: str):

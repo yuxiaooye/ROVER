@@ -592,7 +592,7 @@ class ActorRolloutRefWorker(Worker, DistProfilerExtension):
 
     @register(dispatch_mode=Dispatch.ONE_TO_ALL)
     def init_model(self):
-        from verl.workers.actor import DataParallelPPOActor, DataParallelRPEActor
+        from verl.workers.actor import DataParallelPPOActor, DataParallelROVERActor
 
         # This is used to import external_lib into the huggingface systems
         import_external_libs(self.config.model.get("external_lib", None))
@@ -651,8 +651,8 @@ class ActorRolloutRefWorker(Worker, DistProfilerExtension):
                     config=actor_cfg, actor_module=self.actor_module_fsdp, actor_optimizer=self.actor_optimizer
                 )
             else:
-                # print('>>>self.actor, use DataParallelRPEActor')
-                self.actor = DataParallelRPEActor(
+                # print('>>>self.actor, use DataParallelROVERActor')
+                self.actor = DataParallelROVERActor(
                     config=actor_cfg, actor_module=self.actor_module_fsdp, actor_optimizer=self.actor_optimizer
                 )
 
@@ -689,8 +689,8 @@ class ActorRolloutRefWorker(Worker, DistProfilerExtension):
                 # print('>>>self.ref_policy, use DataParallelPPOActor')
                 self.ref_policy = DataParallelPPOActor(config=self.config.ref, actor_module=self.ref_module_fsdp)
             else:
-                # print('>>>self.ref_policy, use DataParallelRPEActor')
-                self.ref_policy = DataParallelRPEActor(config=self.config.ref, actor_module=self.ref_module_fsdp)
+                # print('>>>self.ref_policy, use DataParallelROVERActor')
+                self.ref_policy = DataParallelROVERActor(config=self.config.ref, actor_module=self.ref_module_fsdp)
 
         if self._is_actor:
             self.flops_counter = FlopsCounter(self.actor_model_config)
