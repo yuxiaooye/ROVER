@@ -55,8 +55,17 @@ pip install -e .
 pip3 install flash-attn --no-build-isolation
 pip install wandb IPython matplotlib
 ```
-- For math tasks,
-We follow the installation instructions from the "Running environment" section in the [POLARIS](https://github.com/ChenxinAn-fdu/POLARIS?tab=readme-ov-file#demo) README, which works well with Qwen3 training.
+- For math tasks:
+```
+cd Math
+conda create -n rover-math python=3.12
+pip install -e ./verl
+pip install -e ./
+pip install transformers==4.51.0
+pip install vllm==0.8.4
+pip install tensordict==0.6.2
+ 
+```
 
 ### 🎯 Training
 - For training a model to solve the countdown task, please download [Qwen2.5-3B](https://huggingface.co/Qwen/Qwen2.5-3B) and then set the model path in [`run.sh`](./Coundown/scripts/run.sh), and then try:
@@ -67,6 +76,8 @@ bash ./scripts/run.sh
 ```
 - For math tasks, please download [Qwen3-8B-Base](https://huggingface.co/Qwen/Qwen3-8B-Base) model, and then try:
 ```
+conda activate rover-math
+cd Math
 ./scripts/deepscaler/train/rover_qwen3_8b.sh --model /path/to/qwen3-8b --wandb_api_key your_wandb_api_key
 ```
 ### 🔎 Evaluation
@@ -80,6 +91,8 @@ Note that before running the generation commands, you should first set the `BASE
 
 - For math tasks, you can rollout on test set (use AIME24 as an example) and compute pass@k as follows:
 ```
+conda activate rover-math
+cd Math
 bash ./gen_eval_pipeline.sh /path/to/trained/model AIME2024
 python passk_comparison.py
 ```
