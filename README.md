@@ -27,7 +27,7 @@ This is the official repository for the paper [Random Policy Valuation is Enough
 
 This work considers two tasks for training and evaluating ROVER, which are countdown games for fine-grained analysis and more complex math reasoning tasks. Therefore, this project uses two separate environments for different tasks.
 
-For countdown tasks, you can follow the commands below
+For countdown tasks, you can follow the commands below:
 ```
 cd Countdown
 conda create -n rover-countdown python=3.9
@@ -43,27 +43,34 @@ For the math reasoning tasks,
 We follow the installation instructions from the "Running environment" section in the [POLARIS](https://github.com/ChenxinAn-fdu/POLARIS?tab=readme-ov-file#demo) README, which works well with Qwen3 training.
 
 ### 🎯 Training
-For training a model to solve the countdown task, please download [Qwen2.5-3B](https://huggingface.co/Qwen/Qwen2.5-3B) and then set the model path in [`run.sh`](./Coundown/scripts/run.sh), and then try
+For training a model to solve the countdown task, please download [Qwen2.5-3B](https://huggingface.co/Qwen/Qwen2.5-3B) and then set the model path in [`run.sh`](./Coundown/scripts/run.sh), and then try:
 ```
 conda activate rover-countdown
 cd Countdown
 bash ./scripts/run.sh
 ```
-
+For the math tasks, please download [Qwen3-8B-Base](https://huggingface.co/Qwen/Qwen3-8B-Base) model, and then try:
 ```
 ./scripts/deepscaler/train/rover_qwen3_8b.sh --model /path/to/qwen3-8b --wandb_api_key your_wandb_api_key
 ```
 ### 🔎 Evaluation
-Regarding the countdown task, you can follow the commands below to test the model's performance on the test set
+Regarding the countdown task, you can follow the commands below to test the model's performance on the test set:
 ```
 conda activate rover-countdown
 cd Countdown
 bash ./scripts/generate.sh
 ```
 Note that before running the generation commands, you should first set the `BASE_OUTPUT_DIR`, `MODEL_BASE_PATH`, and `TEST_DATA_PATH` in the `generate.sh`.
+
+For math tasks, you can rollout on test set (use AIME24 as an example) and compute pass@k as follows:
+```
+bash ./gen_eval_pipeline.sh /path/to/trained/model AIME2024
+python passk_comparison.py
+```
+
 ### 👍 Acknowledgement
 We thank the following open-source works:
-- We follow [verl](https://github.com/volcengine/verl) and [DeepScaler](https://github.com/agentica-project/rllm) to build our codebase
+- We follow [verl](https://github.com/volcengine/verl) and [DeepScaler](https://github.com/agentica-project/rllm) to build our codebase.
 - We follow [TinyZero](https://github.com/Jiayi-Pan/TinyZero) for implementation the countdown task.
 - We adopt the dataset provided by [DeepScaler](https://github.com/agentica-project/rllm) for training math reasoning models.
 ### 📖 Citation
