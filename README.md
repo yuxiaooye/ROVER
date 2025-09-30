@@ -7,7 +7,7 @@
       alt="ROVER Paper on arXiv"
     />
 </a>
-  <a href="https://x.com/tinner_he/status/">
+  <a href="https://x.com/tinner_he/status/1972872814127727004">
     <img
       src="https://img.shields.io/badge/ROVER-Threads-red?logo=X&logoColor=black"
       alt="ROVER twitter"
