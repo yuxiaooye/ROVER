@@ -19,7 +19,7 @@ parser.add_argument('--temperature', type=float, default=0.6)
 parser.add_argument('--top_p', type=float, default=0.95)
 parser.add_argument('--max_tokens', type=int, default=20480)
 parser.add_argument('--batch_size', type=int, default=32)
-parser.add_argument('--model', type=str, default='qwen3-8b-base-rpe')
+parser.add_argument('--model', type=str, default='qwen3-8b-base')
 parser.add_argument('--test_file', type=str, default='aime-2024-deepscaler-repeat128.parquet')
 parser.add_argument('--port', type=int, default=8080, help='vLLM port')
 

@@ -113,7 +113,6 @@ class DummyModelLoader(BaseModelLoader):
         # from vllm import ModelRegistry
         # from verl.third_party.vllm.vllm_v_0_6_3.models.qwen2 import Qwen2ForCausalLM
         # ModelRegistry.register_model("Qwen2ForCausalLM", Qwen2ForCausalLM)
-                # update_model_config(actor_model_config, override_config_kwargs={'architectures':"RPEForCausalLM"})
     def download_model(self, model_config: ModelConfig) -> None:
         pass
 

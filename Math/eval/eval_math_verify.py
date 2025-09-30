@@ -7,7 +7,7 @@ from tqdm import tqdm
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, default='qwen3-8b-base-rpe')
+parser.add_argument('--model', type=str, default='qwen3-8b-base')
 parser.add_argument('--test_file', type=str, default='aime-2024-deepscaler-repeat128.parquet')
 parser.add_argument('--temperature', type=float, default=0.6)
 parser.add_argument('--is_olympiad', default=False, action='store_true')

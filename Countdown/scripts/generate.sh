@@ -1,6 +1,6 @@
 export N_GPUS=4
 export ROLLOUT_TP_SIZE=4
-export EXPERIMENT_NAME=countdown-rpe-3b-mse-in2-e1
+export EXPERIMENT_NAME=countdown-rover-3b-mse-in2-e1
 export VLLM_ATTENTION_BACKEND=XFORMERS
 export RAY_memory_usage_threshold=0.98
 # STEPS=(100 200 300 400 500 600 700 800 900 1000 1100 1200 1300 1400)
