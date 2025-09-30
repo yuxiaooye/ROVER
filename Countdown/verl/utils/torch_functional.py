@@ -115,7 +115,7 @@ def sum_log_softmax(x: torch.Tensor,q=False) -> torch.Tensor:
     x_float = x.float()
     D = x_float.shape[-1]
     logsumexp_ = torch.logsumexp(x_float, dim=-1) 
-    mean_x = (x_float/D).sum(dim=-1)  # 形状: (B, L)
+    mean_x = (x_float/D).sum(dim=-1)  # (B, L)
     term = mean_x - logsumexp_
     
     return term#result.to(orig_dtype)
