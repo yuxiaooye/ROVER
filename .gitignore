@@ -118,7 +118,7 @@ ENV/
 *.lock
 
 # data
-*.parquet
+# *.parquet
 
 
 # local logs
@@ -126,3 +126,10 @@ logs
 log
 outputs
 .history
+
+# Math
+Math/ckpts
+Math/wandb
+Math/eval/generation_results
+Math/eval/eval_outputs
+Math/eval/gen_time_cost

@@ -47,7 +47,7 @@ This work considers two tasks for training and evaluating ROVER, which are count
 - For countdown tasks, you can follow the commands below:
 ```
 cd Countdown
-conda create -n rover-countdown python=3.9
+conda create -n rover-countdown python=3.9 -y
 conda activate rover-countdown
 pip3 install vllm==0.6.3
 pip3 install ray
@@ -60,7 +60,7 @@ pip install wandb IPython matplotlib
 - For math tasks:
 ```
 cd Math
-conda create -n rover-math python=3.12
+conda create -n rover-math python=3.12 -y
 conda activate rover-math
 pip install -e ./verl
 pip install -e ./
@@ -94,10 +94,13 @@ Note that before running the generation commands, you should first set the `BASE
 
 - For math tasks, you can eval on test set (use AIME24 as an example) as follows:
 ```
-conda activate rover-math
 cd Math/eval
+conda create -n rover-math-eval python=3.10 -y  # create a minimal env for eval
+conda activate rover-math-eval
+pip install -r requirements_eval.txt
 bash ./gen_eval_pipeline.sh /path/to/trained/model AIME2024
 ```
+Note that `/path/to/trained/model` should end with `global_step_600`. The script sequentially: 1) converts the model to HF format, 2) deploys the vllm model, 3) rollout, 4) scores with math_verify.
 
 ### 👍 Acknowledgement
 We thank the following open-source works:

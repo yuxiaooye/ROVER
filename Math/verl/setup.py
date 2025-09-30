@@ -78,7 +78,7 @@ setup(
     author="Bytedance - Seed - MLSys",
     author_email="zhangchi.usc1992@bytedance.com, gmsheng@connect.hku.hk",
     description="verl: Volcano Engine Reinforcement Learning for LLM",
-    python_requires=">=3.8",  # 从 pyproject.toml 合并
+    python_requires=">=3.8",
     install_requires=install_requires,
     extras_require=extras_require,
     package_data={

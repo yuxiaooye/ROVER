@@ -6,7 +6,7 @@ import time
 import asyncio
 import tqdm
 from tqdm.contrib.concurrent import process_map
-from math_dapo import compute_score
+# from math_dapo import compute_score
 import argparse
 import os
 import openai
@@ -112,12 +112,13 @@ def main(args):
     
     # build save file name
     if args.temperature != 0.6:
-        base_filename = f'eval_{args.test_file.split(".")[0]}_{args.model}_t{args.temperature}'
+        base_filename = f'eval_{os.path.basename(args.test_file).split(".")[0]}_{args.model}_t{args.temperature}'
     else:
-        base_filename = f'eval_{args.test_file.split(".")[0]}_{args.model}'
+        base_filename = f'eval_{os.path.basename(args.test_file).split(".")[0]}_{args.model}'
     
     # save generation results
     save_file = f'generation_results/{base_filename}.parquet'
+    os.makedirs(os.path.dirname(save_file), exist_ok=True)
     df.to_parquet(save_file)
     print(f"model generation saved to {save_file}")
     

@@ -23,18 +23,18 @@ def verify_task(ans, ground, verbose=False):
     return verified_correct
 
 if args.temperature != 0.6:
-    read_file = f'generation_results/eval_{args.test_file.split(".")[0]}_{args.model}_t{args.temperature}.parquet'
+    read_file = f'generation_results/eval_{os.path.basename(args.test_file).split(".")[0]}_{args.model}_t{args.temperature}.parquet'
 else:
-    read_file = f'generation_results/eval_{args.test_file.split(".")[0]}_{args.model}.parquet'
+    read_file = f'generation_results/eval_{os.path.basename(args.test_file).split(".")[0]}_{args.model}.parquet'
 
 df = pd.read_parquet(read_file)
 print(f"read generation result file: {read_file}")
 
 
 if args.temperature != 0.6:
-    save_dir = f'eval_outputs/{args.test_file.split(".")[0]}_{args.model}_t{args.temperature}'
+    save_dir = f'eval_outputs/{os.path.basename(args.test_file).split(".")[0]}_{args.model}_t{args.temperature}'
 else:
-    save_dir = f'eval_outputs/{args.test_file.split(".")[0]}_{args.model}'
+    save_dir = f'eval_outputs/{os.path.basename(args.test_file).split(".")[0]}_{args.model}'
 os.makedirs(save_dir, exist_ok=True)
 
 correct_count = 0

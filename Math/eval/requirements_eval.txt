@@ -1,0 +1,6 @@
+openai==0.28.0
+typing_extensions
+pyarrow
+antlr4-python3-runtime==4.11.0 
+latex2sympy2_extended 
+math_verify
