@@ -67,6 +67,7 @@ pip install -e ./
 pip install transformers==4.51.0
 pip install vllm==0.8.4
 pip install tensordict==0.6.2
+pip install flash_attn==2.7.4.post1
 ```
 
 ### 🎯 Training
