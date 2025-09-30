@@ -47,12 +47,12 @@ def batch_correlation(a, b):
         a_mean = a[i].mean()  # shape: (B, 1)
         b_mean = b[i].mean()  # shape: (B, 1)
         numerator = torch.sum((a[i] - a_mean) * (b[i] - b_mean))  # shape: (B,)
-        # 计算分母（标准差的乘积）
+        
         a_std = torch.sqrt(torch.sum((a[i] - a_mean)**2))  # shape: (B,)
         b_std = torch.sqrt(torch.sum((b[i] - b_mean)**2))  # shape: (B,)
         denominator = a_std * b_std  # shape: (B,)
     
-        # 计算相关系数
+        
         correlations[i] = numerator / (denominator+1e-6)
         # matrix = torch.stack([a[i], b[i]])
         # corr_matrix = torch.corrcoef(matrix)

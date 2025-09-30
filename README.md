@@ -65,7 +65,6 @@ pip install -e ./
 pip install transformers==4.51.0
 pip install vllm==0.8.4
 pip install tensordict==0.6.2
- 
 ```
 
 ### 🎯 Training
@@ -90,12 +89,11 @@ bash ./scripts/generate.sh
 ```
 Note that before running the generation commands, you should first set the `BASE_OUTPUT_DIR`, `MODEL_BASE_PATH`, and `TEST_DATA_PATH` in the `generate.sh`.
 
-- For math tasks, you can rollout on test set (use AIME24 as an example) and compute pass@$k$ as follows:
+- For math tasks, you can eval on test set (use AIME24 as an example) as follows:
 ```
 conda activate rover-math
-cd Math
+cd Math/eval
 bash ./gen_eval_pipeline.sh /path/to/trained/model AIME2024
-python passk_comparison.py
 ```
 
 ### 👍 Acknowledgement
