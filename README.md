@@ -1,20 +1,21 @@
 # <center> Random Policy Valuation is Enough for LLM Reasoning with Verifiable Rewards </center>
 ---
 <p align="center">
-<a href="https://arxiv.org/abs/2505.17618">
+<a href="https://arxiv.org/abs/2509.24981">
     <img
       src="https://img.shields.io/badge/ROVER-Paper-red?logo=arxiv&logoColor=red"
       alt="ROVER Paper on arXiv"
     />
 </a>
-  <a href="https://x.com/tinner_he/status/1926939246876614735">
+  <a href="https://x.com/tinner_he/status/">
     <img
       src="https://img.shields.io/badge/ROVER-Threads-red?logo=X&logoColor=black"
       alt="ROVER twitter"
     />
   </a>
 </p>
-This is the official repository for the paper [Random Policy Valuation is Enough for LLM Reasoning with Verifiable Rewards](https://arxiv.org/abs/2505.17618). This repository currently contains code for environment setup, training, and evaluation.
+
+This is the official repository for the paper [Random Policy Valuation is Enough for LLM Reasoning with Verifiable Rewards](https://arxiv.org/abs/2509.24981). This repository currently contains code for environment setup, training, and evaluation.
 
 🚀 We propose <u>**R**</u>andom P<u>**o**</u>licy <u>**V**</u>aluation for Di<u>**v**</u>erse <u>**R**</u>easoning (**ROVER**), a minimalist and highly effective RL method for LLM reasoning, achieving superior optimality and diversity by evaluating uniform-policy Q-values.
 
@@ -108,7 +109,7 @@ If you find the project useful, please consider citing our paper:
 @article{he2025randompolicyvaluation,
       title={Random Policy Valuation is Enough for LLM Reasoning with Verifiable Rewards}, 
       author={Haoran He and Yuxiao Ye and Qingpeng Cai and Chen Hu and Binxing Jiao and Daxin Jiang and Ling Pan},
-      journal={arXiv preprint arXiv:},
+      journal={arXiv preprint arXiv:2509.24981},
       year={2025}
 }
 ```
