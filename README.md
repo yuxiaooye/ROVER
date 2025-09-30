@@ -1,4 +1,4 @@
-# Random Policy Valuation is Enough for LLM Reasoning with Verifiable Rewards
+# <center> Random Policy Valuation is Enough for LLM Reasoning with Verifiable Rewards </center>
 ---
 <p align="center">
 <a href="https://arxiv.org/abs/2505.17618">
@@ -20,10 +20,10 @@ This is the official repository for the paper [Random Policy Valuation is Enough
 
 
 ### 🏆 Main Results and Features
-<img width="1217" height="395" alt="image" src="https://github.com/user-attachments/assets/5c242c66-baec-4416-9a3e-89cbef8d6724" />
+<img width="1217" alt="image" src="./teaser.png" />
 <em>Figure 1: (a) ROVER achieves superior performances in terms of both pass@1 and pass@256 (trained on Qwen3-8B-Base averaged over AIME24, AIME24 and HMMT25 tasks). (b) Illustrative example demonstrating that ROVER achieves high-quality solutions with a lightweight procedure (see Table below for details) while maintaining diversity. (c) ROVER achieves higher diversity.</em> <br>
 <br>
-ROVER uses minimal GPU memory, leaving more space for the KV cache. This allows ROVER to run on smaller memory setups and speeds up training:
+ROVER needs minimal GPU memory and computation cost, leaving more space for the KV cache. This allows ROVER to run on smaller memory setups and speeds up training:
 
 | Method       | Memory Usage of Model Parameters                |
 | ------------ | ----------------------------------------------- |
@@ -89,10 +89,10 @@ bash ./scripts/generate.sh
 ```
 Note that before running the generation commands, you should first set the `BASE_OUTPUT_DIR`, `MODEL_BASE_PATH`, and `TEST_DATA_PATH` in the `generate.sh`.
 
-- For math tasks, you can rollout on test set (use AIME24 as an example) and compute pass@k as follows:
+- For math tasks, you can rollout on test set (use AIME24 as an example) and compute pass@$k$ as follows:
 ```
 conda activate rover-math
-cd Math
+cd Math/eval
 bash ./gen_eval_pipeline.sh /path/to/trained/model AIME2024
 python passk_comparison.py
 ```
