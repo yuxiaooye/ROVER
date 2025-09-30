@@ -48,6 +48,7 @@ This work considers two tasks for training and evaluating ROVER, which are count
 ```
 cd Countdown
 conda create -n rover-countdown python=3.9
+conda activate rover-countdown
 pip3 install vllm==0.6.3
 pip3 install ray
 # verl
@@ -60,6 +61,7 @@ pip install wandb IPython matplotlib
 ```
 cd Math
 conda create -n rover-math python=3.12
+conda activate rover-math
 pip install -e ./verl
 pip install -e ./
 pip install transformers==4.51.0
