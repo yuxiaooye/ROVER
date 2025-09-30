@@ -92,7 +92,7 @@ Note that before running the generation commands, you should first set the `BASE
 - For math tasks, you can rollout on test set (use AIME24 as an example) and compute pass@$k$ as follows:
 ```
 conda activate rover-math
-cd Math
+cd Math/eval
 bash ./gen_eval_pipeline.sh /path/to/trained/model AIME2024
 python passk_comparison.py
 ```
