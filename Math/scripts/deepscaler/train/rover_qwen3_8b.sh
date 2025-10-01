@@ -44,8 +44,8 @@ CKPTS_DIR=${CKPTS_DIR:-"ckpts/${SCRIPT_NAME_NO_EXT}"}
 python3 -m verl.trainer.main_rover \
     algorithm.adv_estimator=grpo \
     algorithm.norm_adv_by_std_in_grpo=True \
-    data.train_files=/data/ROVER-qwen3/scripts/deepscaler/data/deepscaler_train.parquet \
-    data.val_files=/data/ROVER-qwen3/scripts/deepscaler/data/aime.parquet \
+    data.train_files=data/deepscaler_train.parquet \
+    data.val_files=data/aime.parquet \
     data.train_batch_size=128 \
     data.val_batch_size=512 \
     data.max_prompt_length=1024 \
