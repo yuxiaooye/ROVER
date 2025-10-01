@@ -46,12 +46,12 @@ class RewardMathFn(RewardFn):
         if THOUGHT_DELIMITER_END in model_response:
             model_solution = model_response.split(THOUGHT_DELIMITER_END)[1]
         else:
-            print('>>> MODEL_PATH: ', os.environ.get("MODEL_PATH", ""))
+            # print('>>> MODEL_PATH: ', os.environ.get("MODEL_PATH", ""))
             if "qwen2.5" in os.environ.get("MODEL_PATH", "").lower() or "qwen3" in os.environ.get("MODEL_PATH", "").lower():
-                print('>>> qwen model, no </think> in model_response')
+                # print('>>> qwen model, </think> is not required in model_response. Meet expectations.')
                 model_solution = model_response
             else:
-                print('>>> distilled model, no </think> in model_response')
+                # print('>>> distilled model, no </think> in model_response')
                 return RewardOutput(reward=self.config.format_error_reward, is_correct=False)
         
         # breakpoint()

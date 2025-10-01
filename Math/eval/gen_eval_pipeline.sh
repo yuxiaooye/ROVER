@@ -43,7 +43,11 @@ else
 fi
 
 # initialize conda
-source /data/miniconda3/etc/profile.d/conda.sh
+if [ -z "$CONDA_EXE" ]; then
+    echo "Error: conda not found. Please install conda or ensure it's initialized in your shell."
+    exit 1
+fi
+source "$(dirname $(dirname $CONDA_EXE))/etc/profile.d/conda.sh"
 eval "$(conda shell.bash hook)"
 conda activate rover-math
 

@@ -53,7 +53,7 @@ for idx, row in tqdm(df[['prompt', 'output', 'reward_model']].iterrows(), total=
 
     # verify
     if args.is_olympiad:
-        print('>>>olympiad answer:', answer)
+        # print('>>>olympiad answer:', answer)
         answer = eval(answer)
         assert type(answer) == list and len(answer) == 1
         answer = '\\boxed{' + answer[0] + '}'

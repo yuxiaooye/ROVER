@@ -863,12 +863,12 @@ class DataParallelROVERActor(BasePPOActor):
         # Split to make minibatch iterator for updating the actor
         # See PPO paper for details. https://arxiv.org/abs/1707.06347
         mini_batches = data.split(self.config.ppo_mini_batch_size)
-        print('>>>len(mini_batches): ', len(mini_batches))
+        # print('>>>len(mini_batches): ', len(mini_batches))
 
         on_policy = len(mini_batches) == 1 and self.config.ppo_epochs == 1
 
         metrics = {}
-        print('>>>ppo_epochs: ', self.config.ppo_epochs)
+        #print('>>>ppo_epochs: ', self.config.ppo_epochs)
         for in_epoch in range(self.config.ppo_epochs):
             for batch_idx, mini_batch in enumerate(mini_batches):
                 if self.config.use_dynamic_bsz:
@@ -1014,7 +1014,6 @@ class DataParallelROVERActor(BasePPOActor):
                     }
                     append_to_dict(metrics, metrics_update)
 
-
                     if hasattr(self.config, 'response_level_rover_loss') and self.config.response_level_rover_loss:
                         # print('>>> response-level rover_loss')
                         rover_loss = (((q_values).sum(dim=-1) / response_mask.sum(dim=-1) - low_var_reward[:, 0].detach())**2).mean()
@@ -1025,8 +1024,8 @@ class DataParallelROVERActor(BasePPOActor):
                     # if in_epoch:
                     clip_gt_ratio = ((q_values > low_var_reward) & (low_var_reward > 0)).sum().float() / ((low_var_reward >= 0).sum() + 1e-8)
                     clip_lt_ratio = ((q_values < low_var_reward) & (low_var_reward < 0)).sum().float() / ((low_var_reward <= 0).sum() + 1e-8)
-                    print('>>>clip_gt_ratio', clip_gt_ratio.detach().item())
-                    print('>>>clip_lt_ratio', clip_lt_ratio.detach().item())
+                    #print('>>>clip_gt_ratio', clip_gt_ratio.detach().item())
+                    #print('>>>clip_lt_ratio', clip_lt_ratio.detach().item())
                     metrics_update = {
                         'actor/clip_gt_ratio': clip_gt_ratio.detach().item(),
                         'actor/clip_lt_ratio': clip_lt_ratio.detach().item(),
